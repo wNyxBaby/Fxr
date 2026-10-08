@@ -1246,12 +1246,9 @@ function Window:ToggleMinimise()
     local fadeInfo = TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
 
     if self.minimised then
+        -- modo k9x: reenciende primero para que la animación de restaurado se vea
         if self._minimiseHidesUI then
-            self.minimised = false
-            image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
             self.screenGui.Enabled = true
-            self.animating = false
-            return
         end
         self.minimised = false
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
@@ -1297,11 +1294,14 @@ function Window:ToggleMinimise()
         self.minimised = true
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.maximise) -- maximise icon while minimised
 
-        -- modo k9x: ocultar todo en vez de colapsar a la barra (se restaura con K)
+        -- modo k9x: deja correr la animación de colapsado y al final oculta
+        -- todo (sin píldora). Se restaura con el botón o con K.
         if self._minimiseHidesUI then
-            self.screenGui.Enabled = false
-            self.animating = false
-            return
+            task.delay(0.55, function()
+                if self.minimised and not self.hidden and self._minimiseHidesUI then
+                    self.screenGui.Enabled = false
+                end
+            end)
         end
 
         -- fade the content + tab pills out instead of cutting them, then hide them once faded
