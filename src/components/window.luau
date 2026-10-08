@@ -1249,6 +1249,10 @@ function Window:ToggleMinimise()
         -- modo k9x: reenciende primero para que la animación de restaurado se vea
         if self._minimiseHidesUI then
             self.screenGui.Enabled = true
+            self.main.ClipsDescendants = false
+            if self.drag and self.drag.drag then
+                self.drag.drag.Visible = true
+            end
         end
         self.minimised = false
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
@@ -1293,6 +1297,15 @@ function Window:ToggleMinimise()
     else
         self.minimised = true
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.maximise) -- maximise icon while minimised
+
+        -- modo k9x: recorta el desborde durante la contracción y esconde la
+        -- barra de arrastre (vive fuera del marco y quedaría flotando)
+        if self._minimiseHidesUI then
+            self.main.ClipsDescendants = true
+            if self.drag and self.drag.drag then
+                self.drag.drag.Visible = false
+            end
+        end
 
         -- modo k9x: deja correr la animación de colapsado y al final oculta
         -- todo (sin píldora). Se restaura con el botón o con K.
