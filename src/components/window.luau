@@ -333,30 +333,18 @@ function Window.new(properties)
 
     self.drag = require(script.Parent.drag).new(self)
 
-    -- k9x: la barra exterior de arrastre no se muestra (mover es por la
-    -- barra superior). En su lugar hay agarre interior para tamaño.
+    -- k9x: la barra exterior de arrastre se conserva como en el original
+    -- (mover también es por la barra superior). Default visible.
     local showDragBar = properties.showDragBar
     if showDragBar == nil then
         showDragBar = properties.ShowDragBar
     end
     if showDragBar == nil then
-        showDragBar = false
+        showDragBar = true
     end
     self._showDragBar = showDragBar
     if not showDragBar then
         self.drag.drag.Visible = false
-    end
-
-    -- k9x: agarre curvo interior abajo-derecha para cambiar el tamaño
-    local allowResize = properties.allowResize
-    if allowResize == nil then
-        allowResize = properties.AllowResize
-    end
-    if allowResize == nil then
-        allowResize = true
-    end
-    if allowResize then
-        self.resize = require(script.Parent.resize).new(self)
     end
 
     self.windowCorner = self:Create("UICorner", {
