@@ -1,10 +1,10 @@
-# Contributing to Rayfield Gen 2
+# Contributing to k9x Gen 2
 
-Thank you for helping improve Rayfield Gen 2. This guide takes a new contributor from a clean checkout to a pull request that is ready for review.
+Thank you for helping improve k9x Gen 2. This guide takes a new contributor from a clean checkout to a pull request that is ready for review.
 
 ## Before you start
 
-Use the repository's `dev` branch as the base for normal development. Search the [existing issues](https://github.com/SiriusSoftwareLtd/rayfield-gen2/issues) and pull requests before starting work. For a substantial change, open or discuss an issue first so the approach can be agreed before implementation.
+Use the repository's `dev` branch as the base for normal development. Search the [existing issues](https://github.com/wNyxBaby/Fxr/issues) and pull requests before starting work. For a substantial change, open or discuss an issue first so the approach can be agreed before implementation.
 
 ### Prerequisites
 
@@ -24,8 +24,8 @@ An older Rojo Studio plugin may not be able to connect to the 7.7.0 server.
 ## Set up a clean checkout
 
 ```bash
-git clone https://github.com/SiriusSoftwareLtd/rayfield-gen2.git
-cd rayfield-gen2
+git clone https://github.com/wNyxBaby/Fxr.git
+cd k9x
 git switch dev
 git pull --ff-only
 ```
@@ -72,13 +72,13 @@ Then open Roblox Studio, connect the Rojo plugin to the server, and use Play mod
 
 | Path | Purpose |
 | --- | --- |
-| `src/init.luau` | Rayfield's module entry point. |
+| `src/init.luau` | k9x's module entry point. |
 | `src/components/` | UI components and their behavior. |
 | `src/themes/` | Built-in theme definitions. |
 | `src/utility/` | Shared runtime, filesystem, asset, persistence, and other helpers. |
 | `src/types.luau` | Shared Luau type definitions. |
 | `tests/components/` | TestEZ specs for component behavior. |
-| `tests/integration/` | Integration specs for Rayfield workflows. |
+| `tests/integration/` | Integration specs for k9x workflows. |
 | `tests/runner/` | Specs for the local runner and coverage instrumentation. |
 | `tests/utility/` | TestEZ specs for shared utility modules. |
 | `tests/run.server.luau` | Roblox Studio TestEZ runner for the test project. |
@@ -93,7 +93,7 @@ Then open Roblox Studio, connect the Rojo plugin to the server, and use Play mod
 | `assets/` | Repository-managed visual assets. |
 | `.github/` | GitHub Actions and community configuration. |
 
-Files such as `build/`, `coverage/`, `sourcemap.json`, `roblox.yml`, `globalTypes.d.luau`, `Rayfield Gen2.rbxlx`, and `Rayfield Gen2 Tests.rbxlx` are generated locally and ignored by Git. Do not commit them.
+Files such as `build/`, `coverage/`, `sourcemap.json`, `roblox.yml`, `globalTypes.d.luau`, `k9x.rbxlx`, and `k9x Tests.rbxlx` are generated locally and ignored by Git. Do not commit them.
 
 ## Required checks
 
@@ -135,7 +135,7 @@ make test
 
 This uses Lune to execute the same spec modules with a small Roblox datatype/service shim, so it can run in CI without opening Roblox Studio.
 
-To run the same path with Rayfield logs enabled:
+To run the same path with k9x logs enabled:
 
 ```bash
 make test-verbose
@@ -174,7 +174,7 @@ To run tests in Roblox Studio without Avant, build the test place:
 make test-place
 ```
 
-Open `Rayfield Gen2 Tests.rbxlx` in Roblox Studio. The `ServerScriptService.RunTests` script requires `ReplicatedStorage.TestEZ`, runs `ReplicatedStorage.Tests`, and errors if any TestEZ test fails.
+Open `k9x Tests.rbxlx` in Roblox Studio. The `ServerScriptService.RunTests` script requires `ReplicatedStorage.TestEZ`, runs `ReplicatedStorage.Tests`, and errors if any TestEZ test fails.
 
 To run tests with the Avant Plugin, either open the place from `make test-place` or run `make testez-model` before serving `test.project.json` with Rojo. In Studio, use Avant's `Unit Tests` window. Avant currently supports TestEZ and lists every `ModuleScript` whose name ends with `.spec`.
 
@@ -216,9 +216,9 @@ Use `make serve` for the normal Rojo development server, `make dev` to run Rojo 
 
 Do not use a blank issue when a form applies:
 
-- [Report a bug](https://github.com/SiriusSoftwareLtd/rayfield-gen2/issues/new?template=bug_report.yml)
-- [Propose a feature](https://github.com/SiriusSoftwareLtd/rayfield-gen2/issues/new?template=feature_request.yml)
-- [Open the issue-form chooser](https://github.com/SiriusSoftwareLtd/rayfield-gen2/issues/new/choose)
+- [Report a bug](https://github.com/wNyxBaby/Fxr/issues/new?template=bug_report.yml)
+- [Propose a feature](https://github.com/wNyxBaby/Fxr/issues/new?template=feature_request.yml)
+- [Open the issue-form chooser](https://github.com/wNyxBaby/Fxr/issues/new/choose)
 
 Include a minimal reproduction, environment details, relevant logs, and screenshots or recordings for visual bugs. Feature proposals should describe the problem, desired behavior, alternatives, and expected user impact.
 
@@ -226,7 +226,7 @@ Do not report security vulnerabilities in a public issue.
 
 ## Security vulnerabilities
 
-Report suspected vulnerabilities privately through [GitHub's private vulnerability reporting form](https://github.com/SiriusSoftwareLtd/rayfield-gen2/security/advisories/new). Include reproduction steps, affected versions or commits, impact, and any suggested mitigation. Allow the maintainers time to investigate before public disclosure.
+Report suspected vulnerabilities privately through [GitHub's private vulnerability reporting form](https://github.com/wNyxBaby/Fxr/security/advisories/new). Include reproduction steps, affected versions or commits, impact, and any suggested mitigation. Allow the maintainers time to investigate before public disclosure.
 
 ## Commits and pull requests
 
@@ -247,11 +247,11 @@ Report suspected vulnerabilities privately through [GitHub's private vulnerabili
 6. Link the pull request to its issue with a closing keyword, for example `Closes #42`. Use `Refs #42` when the pull request should not close the issue.
 7. Respond to review feedback and keep CI passing. Prefer follow-up commits during active review; maintainers may squash when merging.
 
-Every behavior change must include tests where practical and documentation when it changes public APIs, configuration, examples, or user-visible behavior. Standalone public documentation changes belong in [`SiriusSoftwareLtd/docs`](https://github.com/SiriusSoftwareLtd/docs); link companion documentation work in the pull request when a code change affects public docs. Documentation-only changes should still verify links and commands against the current repository.
+Every behavior change must include tests where practical and documentation when it changes public APIs, configuration, examples, or user-visible behavior. Standalone public documentation changes belong in [`wNyxBaby/Fxr`](https://github.com/wNyxBaby/Fxr); link companion documentation work in the pull request when a code change affects public docs. Documentation-only changes should still verify links and commands against the current repository.
 
 ## Licensing and attribution
 
-Rayfield Gen2 is licensed under the Mozilla Public License 2.0. By contributing, you agree your contributions are licensed under the same terms.
+k9x is licensed under the Mozilla Public License 2.0. By contributing, you agree your contributions are licensed under the same terms.
 
 The repository does not currently define a Contributor License Agreement or Developer Certificate of Origin sign-off requirement. No additional contributor sign-off is required at this time.
 

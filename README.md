@@ -1,16 +1,25 @@
-# Rayfield Gen2
+# k9x
 
-Get Started
-[Sirius Developer Suite - Rayfield Gen2](https://docs.sirius.menu/rayfield-gen2)
+Librería de interfaz privada en español para Roblox.
 
-## Contributing
+Basada en Rayfield Gen2 (c) 2026 Corridon Capital, MPL-2.0 —
+https://github.com/SiriusSoftwareLtd/rayfield-gen2
 
-See [CONTRIBUTING.md](CONTRIBUTING.md) for local setup, required checks, and pull-request guidance.
+## Uso
 
-Run `make ci` before opening a pull request. The gate runs formatting, linting, type analysis, tests, and the enforced coverage threshold.
+```lua
+local k9x = loadstring(request({ Url = "https://raw.githubusercontent.com/wNyxBaby/Fxr/main/k9x.lua", Method = "GET" }).Body)()
 
-## License
+local window = k9x:CreateWindow({ name = "k9x", showName = "k9x", sidebarLayout = true })
+window:SetLocale("es")
 
-Mozilla Public License 2.0. See [LICENSE](LICENSE).
+local tab = window:CreateTab({ name = "Inicio" })
+window:Navigate("Inicio")
+return window
+```
 
-Copyright (c) 2026 Corridon Capital.
+Ver `example.k9x.client.luau` para el ejemplo completo en español.
+
+## Licencia
+
+Mozilla Public License 2.0. Ver [LICENSE](LICENSE).

@@ -17,7 +17,7 @@
 
 interface Env {}
 
-const OWNER_REPO = "SiriusSoftwareLtd/rayfield-gen2";
+const OWNER_REPO = "wNyxBaby/Fxr";
 const EDGE_TTL = 300;
 const CACHE_EPOCH = 2;
 
@@ -88,14 +88,14 @@ export default {
       // Never cached: an outage that caches itself for five minutes outlives
       // the outage. Preview says which channel is missing, because a preview
       // tag that hasn't been cut yet looks identical to GitHub being down.
-      const what = path === "/gen2-preview" ? "No Rayfield Gen2 preview build is published" : "Rayfield Gen2 is unavailable right now";
+      const what = path === "/gen2-preview" ? "No k9x preview build is published" : "k9x is unavailable right now";
       return new Response(`-- ${what}, try again shortly\n`, {
         status: 502,
         headers: {
           "content-type": "text/plain; charset=utf-8",
           "cache-control": "no-store",
           // what GitHub actually said, so a failure can be diagnosed without a deploy
-          "x-rayfield-upstream": String(upstream.status),
+          "x-k9x-upstream": String(upstream.status),
         },
       });
     }
@@ -104,7 +104,7 @@ export default {
       headers: {
         "content-type": "text/plain; charset=utf-8",
         "cache-control": `public, max-age=${EDGE_TTL}`,
-        "x-rayfield-source": channel.source,
+        "x-k9x-source": channel.source,
       },
     });
 

@@ -42,7 +42,7 @@ return {
     Font = variables.brandFont(Enum.FontWeight.Medium),
     ContentColor = Color3.fromRGB(255, 255, 255),
 
-    LiveAnimation = false, -- Subtly changes window gradient and shadow offset to make Rayfield feel more natural.
+    LiveAnimation = false, -- Subtly changes window gradient and shadow offset to make k9x feel more natural.
 
     DarkToggleOverlay = true,
     ElementTransparency = 0,

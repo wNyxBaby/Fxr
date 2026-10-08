@@ -1,5 +1,5 @@
-local helpers = (_G :: any).__RAYFIELD_TEST_HELPERS
-local coverage = (_G :: any).__RAYFIELD_COVERAGE
+local helpers = (_G :: any).__K9X_TEST_HELPERS
+local coverage = (_G :: any).__K9X_COVERAGE
 local luau = require("@lune/luau") :: any
 
 -- runs instrumented source with hit tracking wired up, returning whatever it returns

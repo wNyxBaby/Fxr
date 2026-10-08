@@ -10,14 +10,14 @@
 -- method that exists at runtime but never made it into types.luau fails here.
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Rayfield = require(ReplicatedStorage.Rayfield)
+local k9x = require(ReplicatedStorage.k9x)
 
-return function(window: Rayfield.Window, tab: Rayfield.Tab)
+return function(window: k9x.Window, tab: k9x.Tab)
     -- a heading in the sidebar rail, not in a tab's element list
-    local railSection: Rayfield.TabSection = window:CreateSection({ name = "General" })
+    local railSection: k9x.TabSection = window:CreateSection({ name = "General" })
     railSection:Remove()
 
-    local progress: Rayfield.Progress = tab:CreateProgress({ name = "Progress" })
+    local progress: k9x.Progress = tab:CreateProgress({ name = "Progress" })
     progress:Set(0.5)
     local progressValue: number = progress:Get()
     local progressRatio: number = progress:GetPercentage()
@@ -27,7 +27,7 @@ return function(window: Rayfield.Window, tab: Rayfield.Tab)
     progress:SetIndeterminate(true)
     progress:Remove()
 
-    local console: Rayfield.Console = tab:CreateConsole({ name = "Console" })
+    local console: k9x.Console = tab:CreateConsole({ name = "Console" })
     console:Set("body")
     console:Append("line")
     console:Clear()
@@ -37,13 +37,13 @@ return function(window: Rayfield.Window, tab: Rayfield.Tab)
     console:Remove()
 
     -- every element you can operate takes a lock, and only those
-    local button: Rayfield.Button = tab:CreateButton({ name = "Button" })
-    local toggle: Rayfield.Toggle = tab:CreateToggle({ name = "Toggle" })
-    local slider: Rayfield.Slider = tab:CreateSlider({ name = "Slider" })
-    local dropdown: Rayfield.Dropdown = tab:CreateDropdown({ name = "Dropdown" })
-    local input: Rayfield.Input = tab:CreateInput({ name = "Input" })
-    local keybind: Rayfield.Keybind = tab:CreateKeybind({ name = "Keybind" })
-    local colorPicker: Rayfield.ColorPicker = tab:CreateColorPicker({ name = "Colour" })
+    local button: k9x.Button = tab:CreateButton({ name = "Button" })
+    local toggle: k9x.Toggle = tab:CreateToggle({ name = "Toggle" })
+    local slider: k9x.Slider = tab:CreateSlider({ name = "Slider" })
+    local dropdown: k9x.Dropdown = tab:CreateDropdown({ name = "Dropdown" })
+    local input: k9x.Input = tab:CreateInput({ name = "Input" })
+    local keybind: k9x.Keybind = tab:CreateKeybind({ name = "Keybind" })
+    local colorPicker: k9x.ColorPicker = tab:CreateColorPicker({ name = "Colour" })
 
     button:Lock("needs a key")
     toggle:Lock()

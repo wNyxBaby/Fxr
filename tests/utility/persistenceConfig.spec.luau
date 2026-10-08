@@ -1,4 +1,4 @@
-local requireUtility = (_G :: any).__RAYFIELD_TEST_HELPERS.requireUtility
+local requireUtility = (_G :: any).__K9X_TEST_HELPERS.requireUtility
 
 return function()
     local persistenceConfig = requireUtility("persistenceConfig")
@@ -95,7 +95,7 @@ return function()
             local dir, fullPath = persistenceConfig.getPath(window, "Alt")
 
             expect(dir).to.equal("Root/Configurations")
-            expect(fullPath).to.equal("Root/Configurations/Alt.rfld")
+            expect(fullPath).to.equal("Root/Configurations/Alt.k9x")
         end)
 
         it("saves serializable controls and skips controls that fail serialization", function()
@@ -118,7 +118,7 @@ return function()
 
             expect(persistenceConfig.save(window)).to.equal(true)
             expect(ensuredDir).to.equal("Root/Configurations")
-            expect(files["Root/Configurations/Main.rfld"]).to.equal("encoded-json")
+            expect(files["Root/Configurations/Main.k9x"]).to.equal("encoded-json")
             expect(encodedData.Alpha).to.equal("serialized")
             expect(encodedData.Beta).to.equal(42)
             expect(encodedData.Broken).never.to.be.ok()
@@ -148,27 +148,27 @@ return function()
             end
 
             expect(persistenceConfig.save(makeWindow())).to.equal(true)
-            expect(written[1]).to.equal("Root/Configurations/Main.rfld.saving")
-            expect(written[2]).to.equal("Root/Configurations/Main.rfld")
+            expect(written[1]).to.equal("Root/Configurations/Main.k9x.saving")
+            expect(written[2]).to.equal("Root/Configurations/Main.k9x")
             -- the parked copy goes once the real file is whole again
-            expect(files["Root/Configurations/Main.rfld.saving"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main.k9x.saving"]).never.to.be.ok()
         end)
 
         it("leaves the real file alone when the parked copy reads back short", function()
             filesystem.readfile = function()
                 return "truncated"
             end
-            files["Root/Configurations/Main.rfld"] = "previous"
+            files["Root/Configurations/Main.k9x"] = "previous"
 
             expect(persistenceConfig.save(makeWindow())).to.equal(false)
-            expect(files["Root/Configurations/Main.rfld"]).to.equal("previous")
+            expect(files["Root/Configurations/Main.k9x"]).to.equal("previous")
         end)
 
         it("recovers from the parked copy when the real file is torn", function()
             local window = makeWindow()
             local setValue
-            files["Root/Configurations/Main.rfld"] = "torn"
-            files["Root/Configurations/Main.rfld.saving"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "torn"
+            files["Root/Configurations/Main.k9x.saving"] = "stored-json"
             variables.httpService.JSONDecode = function(_, text)
                 if text == "torn" then
                     error("decode failed")
@@ -186,18 +186,18 @@ return function()
             expect(persistenceConfig.load(window)).to.equal(true)
             expect(setValue).to.equal(7)
             -- the wreck is replaced rather than backed up, nothing was lost
-            expect(files["Root/Configurations/Main.rfld"]).to.equal("stored-json")
-            expect(files["Root/Configurations/Main (Incorrect Format).rfld"]).never.to.be.ok()
-            expect(files["Root/Configurations/Main.rfld.saving"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main.k9x"]).to.equal("stored-json")
+            expect(files["Root/Configurations/Main (Incorrect Format).k9x"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main.k9x.saving"]).never.to.be.ok()
         end)
 
         it("never resurrects a deleted config from a parked copy", function()
             local window = makeWindow()
-            files["Root/Configurations/Main.rfld"] = "stored-json"
-            files["Root/Configurations/Main.rfld.saving"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
+            files["Root/Configurations/Main.k9x.saving"] = "stored-json"
 
             expect(persistenceConfig.delete(window, "Main")).to.equal(true)
-            expect(files["Root/Configurations/Main.rfld.saving"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main.k9x.saving"]).never.to.be.ok()
             expect(persistenceConfig.load(window)).to.equal(false)
         end)
 
@@ -206,7 +206,7 @@ return function()
             local setValue
             local deserialized
             local nilSet = "not-called"
-            files["Root/Configurations/Main.rfld"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
             decodedData = {
                 Alpha = 7,
                 Beta = "stored",
@@ -287,20 +287,20 @@ return function()
 
         it("backs up and deletes invalid configuration files", function()
             local window = makeWindow()
-            files["Root/Configurations/Main.rfld"] = "not-json"
+            files["Root/Configurations/Main.k9x"] = "not-json"
             variables.httpService.JSONDecode = function()
                 error("decode failed")
             end
 
             expect(persistenceConfig.load(window)).to.equal(false)
-            expect(files["Root/Configurations/Main (Incorrect Format).rfld"]).to.equal("not-json")
-            expect(files["Root/Configurations/Main.rfld"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main (Incorrect Format).k9x"]).to.equal("not-json")
+            expect(files["Root/Configurations/Main.k9x"]).never.to.be.ok()
         end)
 
         it("treats a scalar JSON root as an invalid file", function()
             local window = makeWindow()
             local applied = "not-called"
-            files["Root/Configurations/Main.rfld"] = "5"
+            files["Root/Configurations/Main.k9x"] = "5"
             decodedData = 5
             window.controls = {
                 Alpha = {
@@ -312,21 +312,21 @@ return function()
 
             expect(persistenceConfig.load(window)).to.equal(false)
             expect(applied).to.equal("not-called")
-            expect(files["Root/Configurations/Main (Incorrect Format).rfld"]).to.equal("5")
-            expect(files["Root/Configurations/Main.rfld"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main (Incorrect Format).k9x"]).to.equal("5")
+            expect(files["Root/Configurations/Main.k9x"]).never.to.be.ok()
         end)
 
         it("derives the backup name from the real config path", function()
             local window = makeWindow()
-            -- getConfigPath sanitizes this to "My Hub.rfld"; the backup must match it
+            -- getConfigPath sanitizes this to "My Hub.k9x"; the backup must match it
             window.configuration.fileName = "My: Hub"
-            files["Root/Configurations/My Hub.rfld"] = "not-json"
+            files["Root/Configurations/My Hub.k9x"] = "not-json"
             variables.httpService.JSONDecode = function()
                 error("decode failed")
             end
 
             expect(persistenceConfig.load(window)).to.equal(false)
-            expect(files["Root/Configurations/My Hub (Incorrect Format).rfld"]).to.equal("not-json")
+            expect(files["Root/Configurations/My Hub (Incorrect Format).k9x"]).to.equal("not-json")
         end)
 
         it("numbers each corrupt backup instead of overwriting the last", function()
@@ -335,22 +335,22 @@ return function()
                 error("decode failed")
             end
 
-            files["Root/Configurations/Main.rfld"] = "first-wreck"
+            files["Root/Configurations/Main.k9x"] = "first-wreck"
             expect(persistenceConfig.load(window)).to.equal(false)
-            files["Root/Configurations/Main.rfld"] = "second-wreck"
+            files["Root/Configurations/Main.k9x"] = "second-wreck"
             expect(persistenceConfig.load(window)).to.equal(false)
 
             -- the first backup is the salvageable one, it must survive the second corruption
-            expect(files["Root/Configurations/Main (Incorrect Format).rfld"]).to.equal("first-wreck")
-            expect(files["Root/Configurations/Main (Incorrect Format 2).rfld"]).to.equal("second-wreck")
+            expect(files["Root/Configurations/Main (Incorrect Format).k9x"]).to.equal("first-wreck")
+            expect(files["Root/Configurations/Main (Incorrect Format 2).k9x"]).to.equal("second-wreck")
         end)
 
         it("keeps an outer load's guard up when a control callback loads again", function()
             local window = makeWindow()
             local guardDuringNested
             local nested = false
-            files["Root/Configurations/Main.rfld"] = "stored-json"
-            files["Root/Configurations/Other.rfld"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
+            files["Root/Configurations/Other.k9x"] = "stored-json"
             decodedData = { Alpha = 1 }
             window.controls = {
                 Alpha = {
@@ -373,7 +373,7 @@ return function()
 
         it("resets the loading flag even when applying the config throws", function()
             local window = makeWindow()
-            files["Root/Configurations/Main.rfld"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
             decodedData = { Alpha = 1 }
             -- iterating the controls throws; the flag must still come back down
             window.controls = setmetatable({}, {
@@ -400,7 +400,7 @@ return function()
             }
             -- Late's element isn't built yet; Alpha's control must still win over its old value
             window._loadedConfig = { Late = "saved", Alpha = "stale" }
-            window._loadedConfigPath = "Root/Configurations/Main.rfld"
+            window._loadedConfigPath = "Root/Configurations/Main.k9x"
 
             expect(persistenceConfig.save(window)).to.equal(true)
             expect(encodedData.Late).to.equal("saved")
@@ -409,7 +409,7 @@ return function()
 
         it("only carries loaded flags into the config they came from", function()
             local window = makeWindow()
-            files["Root/Configurations/A.rfld"] = "stored-json"
+            files["Root/Configurations/A.k9x"] = "stored-json"
             decodedData = { Late = "saved" }
 
             expect(persistenceConfig.load(window, "A")).to.equal(true)
@@ -425,7 +425,7 @@ return function()
         it("returns false when the configuration file is missing or unreadable", function()
             expect(persistenceConfig.load(makeWindow())).to.equal(false)
 
-            files["Root/Configurations/Main.rfld"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
             filesystem.readfile = function()
                 error("read failed")
             end
@@ -435,11 +435,11 @@ return function()
 
         it("lists saved configurations in deterministic order", function()
             listedFiles = {
-                "Root/Configurations/zeta.rfld",
-                "Root/Configurations/Beta (Incorrect Format).rfld",
-                "Root/Configurations/Beta (Incorrect Format 2).rfld",
-                "Root/Configurations/alpha.rfld.saving",
-                "Root/Configurations/alpha.rfld",
+                "Root/Configurations/zeta.k9x",
+                "Root/Configurations/Beta (Incorrect Format).k9x",
+                "Root/Configurations/Beta (Incorrect Format 2).k9x",
+                "Root/Configurations/alpha.k9x.saving",
+                "Root/Configurations/alpha.k9x",
             }
 
             local names = persistenceConfig.list(makeWindow())
@@ -459,12 +459,12 @@ return function()
 
         it("deletes saved configurations and rejects invalid delete requests", function()
             local window = makeWindow()
-            files["Root/Configurations/Main.rfld"] = "stored-json"
+            files["Root/Configurations/Main.k9x"] = "stored-json"
 
             expect(persistenceConfig.delete(window, "")).to.equal(false)
             expect(persistenceConfig.delete(window, "Missing")).to.equal(false)
             expect(persistenceConfig.delete(window, "Main")).to.equal(true)
-            expect(files["Root/Configurations/Main.rfld"]).never.to.be.ok()
+            expect(files["Root/Configurations/Main.k9x"]).never.to.be.ok()
         end)
     end)
 end

@@ -58,8 +58,8 @@ jobs:
           VERSION="$(tr -d '[:space:]' < version.txt)"
           SHORT="$(git rev-parse --short "$COMMIT")"
           {
-            printf -- '-- Rayfield Gen2 v%s-preview (%s, %s)\n' "$VERSION" "$SHORT" "$(date -u +%Y-%m-%d)"
-            printf -- '-- loadstring(game:HttpGet("https://sirius.menu/gen2-preview"))()\n'
+            printf -- '-- k9x v%s-preview (%s, %s)\n' "$VERSION" "$SHORT" "$(date -u +%Y-%m-%d)"
+            printf -- '-- loadstring(game:HttpGet("https://raw.githubusercontent.com/wNyxBaby/Fxr/main/k9x.lua"))()\n'
             printf -- '--\n'
             printf -- '-- Copyright (c) 2026 Corridon Capital\n'
             printf -- '-- This Source Code Form is subject to the terms of the Mozilla Public\n'
@@ -92,10 +92,10 @@ jobs:
           SHORT="$(git rev-parse --short "$COMMIT")"
 
           {
-            printf 'Rolling preview build of Rayfield Gen2, cut from `dev`.\n\n'
-            printf '    local Rayfield = loadstring(game:HttpGet("https://sirius.menu/gen2-preview"))()\n\n'
+            printf 'Rolling preview build of k9x, cut from `dev`.\n\n'
+            printf '    local k9x = loadstring(game:HttpGet("https://raw.githubusercontent.com/wNyxBaby/Fxr/main/k9x.lua"))()\n\n'
             printf 'Built from `%s`, on the way to v%s. This tag moves with every green commit on dev and is not a supported release - use the stable loadstring for anything you ship.\n\n' "$SHORT" "$VERSION"
-            printf 'Docs: https://docs.sirius.menu/rayfield-gen2\n'
+            printf 'Docs: https://github.com/wNyxBaby/Fxr\n'
           } > preview-notes.md
 
           if gh release view preview >/dev/null 2>&1; then
@@ -103,6 +103,6 @@ jobs:
           fi
 
           gh release create preview --prerelease --target "$COMMIT" \
-            --title "Rayfield Gen2 preview ($SHORT)" \
+            --title "k9x preview ($SHORT)" \
             --notes-file preview-notes.md \
             build/bundled.luau build/bundled.txt build/checksums.sha256

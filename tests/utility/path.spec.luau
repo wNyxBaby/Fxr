@@ -1,4 +1,4 @@
-local requireUtility = (_G :: any).__RAYFIELD_TEST_HELPERS.requireUtility
+local requireUtility = (_G :: any).__K9X_TEST_HELPERS.requireUtility
 
 return function()
     local path = requireUtility("path")
@@ -44,13 +44,13 @@ return function()
         end)
 
         it("returns the basename", function()
-            expect(path.basename("a/b/c.rfld")).to.equal("c.rfld")
+            expect(path.basename("a/b/c.k9x")).to.equal("c.k9x")
             expect(path.basename("solo")).to.equal("solo")
         end)
 
         it("strips explicit and inferred extensions", function()
-            expect(path.stripExtension("config.rfld", ".rfld")).to.equal("config")
-            expect(path.stripExtension("config.json", ".rfld")).to.equal("config.json")
+            expect(path.stripExtension("config.k9x", ".k9x")).to.equal("config")
+            expect(path.stripExtension("config.json", ".k9x")).to.equal("config.json")
             expect(path.stripExtension("folder/file.txt")).to.equal("folder/file")
             expect(path.stripExtension("README")).to.equal("README")
         end)

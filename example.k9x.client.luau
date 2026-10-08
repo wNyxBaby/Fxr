@@ -1,5 +1,6 @@
 --!strict
--- k9x - ejemplo base (fork Rayfield Gen2, MPL-2.0)
+-- k9x - ejemplo base en español (librería privada)
+-- Basada en Rayfield Gen2 (c) 2026 Corridon Capital, MPL-2.0
 -- Uso en Studio: pon src como ModuleScript "k9x" en ReplicatedStorage
 
 local ReplicatedStorage = game:GetService("ReplicatedStorage")

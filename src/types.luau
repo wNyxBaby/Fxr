@@ -418,8 +418,8 @@ export type Window = {
     Unload: (self: Window) -> (),
 }
 
-export type Rayfield = {
-    CreateWindow: (self: Rayfield, props: WindowProps) -> Window,
+export type k9x = {
+    CreateWindow: (self: k9x, props: WindowProps) -> Window,
 }
 
 return {}

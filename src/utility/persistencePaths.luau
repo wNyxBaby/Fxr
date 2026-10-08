@@ -30,7 +30,7 @@ function paths.getConfigPath(window: ConfigWindow, name: unknown?): (string?, st
         if safe == "" then
             return nil, nil
         end
-        return dir, path.join(dir, safe .. ".rfld")
+        return dir, path.join(dir, safe .. ".k9x")
     end
     local safe = path.sanitizeFile(window.configuration.fileName or window.name)
     if safe == "" then
@@ -39,12 +39,12 @@ function paths.getConfigPath(window: ConfigWindow, name: unknown?): (string?, st
     if safe == "" then
         safe = "Configuration"
     end
-    return dir, path.join(dir, safe .. ".rfld")
+    return dir, path.join(dir, safe .. ".k9x")
 end
 
 function paths.getSettingsPath(): (string, string)
     local dir = variables.fileSystemManager:getPath("Settings")
-    return dir, path.join(dir, "rayfield.rfld")
+    return dir, path.join(dir, "k9x.k9x")
 end
 
 return paths

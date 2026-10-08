@@ -71,7 +71,7 @@ local function fitWindowSize(mode): UDim2
     return windowSizing.fit(camera and camera.ViewportSize, mode)
 end
 
--- Per-corner radii are newer than the oldest clients Rayfield runs on, so a shape that only
+-- Per-corner radii are newer than the oldest clients k9x runs on, so a shape that only
 -- rounds some of its corners has to check before it asks. Everything still gets a radius on a
 -- client without them, just the same one on all four.
 local cornerNames = { "TopLeftRadius", "TopRightRadius", "BottomLeftRadius", "BottomRightRadius" }
@@ -167,9 +167,9 @@ local function themeOverrides(value)
             return require(named)
         end
         -- a typo'd name shouldnt crash the menu; warn and fall back so the UI still builds
-        log.warn("Rayfield: unknown theme '" .. value .. "', using default")
+        log.warn("k9x: unknown theme '" .. value .. "', using default")
     elseif value ~= nil then
-        log.warn("Rayfield: invalid theme (expected a built-in name or a theme table), using default")
+        log.warn("k9x: invalid theme (expected a built-in name or a theme table), using default")
     end
     return require(themes["default"])
 end
@@ -226,7 +226,7 @@ function Window.new(properties)
     local layout = resolveLayout(properties.sidebarLayout or properties.SidebarLayout)
 
     local self = setmetatable({
-        name = properties.name or properties.Name or "Rayfield Window",
+        name = properties.name or properties.Name or "k9x",
         subheading = properties.subtitle or properties.Subtitle,
         layout = layout,
         size = fitWindowSize(layout.mode),
@@ -235,7 +235,7 @@ function Window.new(properties)
 
         icon = properties.icon or properties.Icon,
         showName = properties.showName or properties.ShowName or "k9x",
-        showIcon = properties.showIcon or properties.ShowIcon or constants.icons.rayfield,
+        showIcon = properties.showIcon or properties.ShowIcon or constants.icons.k9x,
         -- collapse to a round badge rather than an icon-and-label pill
         showIconOnly = properties.showIconOnly or properties.ShowIconOnly or false,
         -- the line under the player's name in the sidebar's profile block
@@ -275,7 +275,7 @@ function Window.new(properties)
         __newindex = function(_, flag, value)
             local control = self.controls[flag]
             if not control then
-                log.warn("Rayfield: no flag '" .. tostring(flag) .. "' to set")
+                log.warn("k9x: no flag '" .. tostring(flag) .. "' to set")
                 return
             end
             control:Set(value)
@@ -304,7 +304,7 @@ function Window.new(properties)
         showProfile = true, -- the player chip at the base of the sidebar rail
     }
 
-    -- Rayfield Gen2 Screen
+    -- k9x Screen
     self.screenGui = self:Create("ScreenGui", {
         Name = variables.httpService:GenerateGUID(false),
         IgnoreGuiInset = true,
@@ -644,7 +644,7 @@ function Window.new(properties)
         customOrder = 1000,
 
         neglectSelector = true,
-        -- everything here is ephemeral: these controls persist to rayfield.rfld via SaveSettings,
+        -- everything here is ephemeral: these controls persist to k9x.k9x via SaveSettings,
         -- never the user's config. children inherit this, so none of them opt out individually.
         forgetState = true,
     })
@@ -891,7 +891,7 @@ function Window:_registerControl(control)
         end
         flag = flag .. n
         log.warn(
-            "Rayfield: duplicate config flag '"
+            "k9x: duplicate config flag '"
                 .. control.flag
                 .. "', saving this one as '"
                 .. flag
@@ -1999,7 +1999,7 @@ function Window:Show()
         self._autoLoaded = true
         local ok, err = pcall(self.Load, self)
         if not ok then
-            log.warn("Rayfield: Failed to load configuration - " .. tostring(err))
+            log.warn("k9x: Failed to load configuration - " .. tostring(err))
         end
     end
 
@@ -2570,7 +2570,7 @@ function Window:_runGuarded(element, fn, ...)
         end
 
         log.warn(
-            `Rayfield encountered an error, with the callback for a {element.__type} component named '{element.name}':`
+            `k9x encountered an error, with the callback for a {element.__type} component named '{element.name}':`
         )
         log.print(err)
 

@@ -42,7 +42,7 @@ end
 function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
     local dir, fullPath = persistenceConfig.getPath(window, name)
     if not dir or not fullPath then
-        log.warn("Rayfield: configuration name '" .. tostring(name) .. "' has no usable characters")
+        log.warn("k9x: configuration name '" .. tostring(name) .. "' has no usable characters")
         return false
     end
 
@@ -63,7 +63,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
         if ok then
             flags[flag] = value
         else
-            log.warn("Rayfield: Failed to serialize flag '" .. tostring(flag) .. "' - " .. tostring(value))
+            log.warn("k9x: Failed to serialize flag '" .. tostring(flag) .. "' - " .. tostring(value))
         end
     end
 
@@ -81,7 +81,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
 
     local encodeSuccess, encoded = pcall(variables.httpService.JSONEncode, variables.httpService, flags)
     if not encodeSuccess then
-        log.warn("Rayfield: Failed to encode configuration - " .. tostring(encoded))
+        log.warn("k9x: Failed to encode configuration - " .. tostring(encoded))
         return false
     end
 
@@ -90,7 +90,7 @@ function persistenceConfig.save(window: ConfigWindow, name: unknown?): boolean
     end)
 
     if not ok then
-        log.warn("Rayfield: Failed to save configuration - " .. tostring(err))
+        log.warn("k9x: Failed to save configuration - " .. tostring(err))
         return false
     end
 
@@ -114,7 +114,7 @@ local function decodeFile(fullPath: string): ({ [string]: unknown }?, string?)
 
     local readOk, contents = pcall(filesystem.readfile, fullPath)
     if not readOk or type(contents) ~= "string" then
-        log.warn("Rayfield: Failed to read configuration file")
+        log.warn("k9x: Failed to read configuration file")
         return nil, nil
     end
 
@@ -132,11 +132,11 @@ end
 -- destroy the salvageable data the first backup exists to keep.
 local function backupPathFor(fullPath: string): string
     -- same path logic as getConfigPath, so the backup lands next to the file it mirrors
-    local stem = path.stripExtension(fullPath, ".rfld")
-    local candidate = stem .. " (Incorrect Format).rfld"
+    local stem = path.stripExtension(fullPath, ".k9x")
+    local candidate = stem .. " (Incorrect Format).k9x"
     local index = 2
     while index <= 100 and filesystem.isfile(candidate) do
-        candidate = stem .. " (Incorrect Format " .. index .. ").rfld"
+        candidate = stem .. " (Incorrect Format " .. index .. ").k9x"
         index += 1
     end
     return candidate
@@ -145,7 +145,7 @@ end
 function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
     local dir, fullPath = persistenceConfig.getPath(window, name)
     if not dir or not fullPath then
-        log.warn("Rayfield: configuration name '" .. tostring(name) .. "' has no usable characters")
+        log.warn("k9x: configuration name '" .. tostring(name) .. "' has no usable characters")
         return false
     end
 
@@ -169,7 +169,7 @@ function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
 
     if not parsedFlags then
         if raw then
-            log.warn("Rayfield: Configuration file has an invalid format, backing up and resetting")
+            log.warn("k9x: Configuration file has an invalid format, backing up and resetting")
             local backupPath = backupPathFor(fullPath)
             pcall(function()
                 filesystem.ensureDir(dir)
@@ -193,7 +193,7 @@ function persistenceConfig.load(window: ConfigWindow, name: unknown?): boolean
     -- the outer load's guard standing
     window._loading = wasLoading
     if not applyOk then
-        log.warn("Rayfield: Failed to apply configuration - " .. tostring(applyErr))
+        log.warn("k9x: Failed to apply configuration - " .. tostring(applyErr))
     end
 
     -- kept so elements built after this load can still restore themselves (see
@@ -219,7 +219,7 @@ function persistenceConfig.applyTo(control: PersistedControl, value: unknown)
         end
     end)
     if not ok then
-        log.warn("Rayfield: Failed to restore flag '" .. tostring(control.flag) .. "' - " .. tostring(err))
+        log.warn("k9x: Failed to restore flag '" .. tostring(control.flag) .. "' - " .. tostring(err))
     end
 end
 
@@ -240,8 +240,8 @@ function persistenceConfig.list(window: ConfigWindow): { string }
         local file = path.basename(filePath)
         -- listfiles returns folders and anything else in the dir; only our own configs are
         -- real names, so require the extension rather than listing whatever is lying around
-        if file:sub(-5) == ".rfld" then
-            local base = path.stripExtension(file, ".rfld")
+        if file:sub(-5) == ".k9x" then
+            local base = path.stripExtension(file, ".k9x")
             if base and base ~= "" and not base:find(" %(Incorrect Format[^%)]*%)$") then
                 table.insert(names, base)
             end

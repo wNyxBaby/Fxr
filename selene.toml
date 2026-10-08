@@ -1,6 +1,6 @@
-# rayfield.yml chains base: roblox, adding the executor globals we feature-detect.
+# k9x.yml chains base: roblox, adding the executor globals we feature-detect.
 # CI generates roblox.yml via `selene generate-roblox-std` before linting.
-std = "rayfield"
+std = "k9x"
 
 [lints]
 # We intentionally guard optional executor globals in boolean context.

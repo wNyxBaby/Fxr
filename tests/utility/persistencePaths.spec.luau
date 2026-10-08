@@ -1,4 +1,4 @@
-local requireUtility = (_G :: any).__RAYFIELD_TEST_HELPERS.requireUtility
+local requireUtility = (_G :: any).__K9X_TEST_HELPERS.requireUtility
 
 return function()
     local paths = requireUtility("persistencePaths")
@@ -32,7 +32,7 @@ return function()
             local dir, fullPath = paths.getConfigPath(window)
 
             expect(dir).to.equal("Root/Configurations/Profiles/Main")
-            expect(fullPath).to.equal("Root/Configurations/Profiles/Main/UserOne.rfld")
+            expect(fullPath).to.equal("Root/Configurations/Profiles/Main/UserOne.k9x")
         end)
 
         it("uses explicit configuration names before window defaults", function()
@@ -45,7 +45,7 @@ return function()
 
             local _, fullPath = paths.getConfigPath(window, "Named/Config")
 
-            expect(fullPath).to.equal("Root/Configurations/NamedConfig.rfld")
+            expect(fullPath).to.equal("Root/Configurations/NamedConfig.k9x")
         end)
 
         it("rejects explicit names that sanitize to nothing", function()
@@ -71,14 +71,14 @@ return function()
 
             local _, fullPath = paths.getConfigPath(window)
 
-            expect(fullPath).to.equal("Root/Configurations/Configuration.rfld")
+            expect(fullPath).to.equal("Root/Configurations/Configuration.k9x")
         end)
 
         it("builds the shared settings path", function()
             local dir, fullPath = paths.getSettingsPath()
 
             expect(dir).to.equal("Root/Settings")
-            expect(fullPath).to.equal("Root/Settings/rayfield.rfld")
+            expect(fullPath).to.equal("Root/Settings/k9x.k9x")
         end)
     end)
 end

@@ -77,7 +77,7 @@ function Tab.new(window, properties)
     -- a tab needs at least one of a name or an icon to show in the selector
     assert(self.name or self.icon, "A tab needs a name or an icon.")
 
-    -- Allow for tabs to be hidden from the tab selector, for Rayfield Settings.
+    -- Allow for tabs to be hidden from the tab selector, for k9x Settings.
     if not self.neglectSelector then
         tabSelector.build(self, self.window.layout)
     end

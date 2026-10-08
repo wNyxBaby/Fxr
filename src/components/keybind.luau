@@ -442,7 +442,7 @@ function Keybind:Set(value, skipChanged)
             local clash = self.window:_keybindUsing(key, self)
             if clash then
                 log.warn(
-                    "Rayfield: "
+                    "k9x: "
                         .. keyName(key)
                         .. " is bound to '"
                         .. tostring(clash.name)
@@ -452,7 +452,7 @@ function Keybind:Set(value, skipChanged)
                 return
             end
         elseif key == self.window.settings.toggleKeybind then
-            log.warn("Rayfield: " .. keyName(key) .. " is the menu toggle key; kept " .. keyName(self.value))
+            log.warn("k9x: " .. keyName(key) .. " is the menu toggle key; kept " .. keyName(self.value))
             return
         end
     end

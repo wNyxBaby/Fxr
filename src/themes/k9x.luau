@@ -1,7 +1,8 @@
 --!strict
 
--- k9x v1 - fork de Rayfield Gen2
--- Base: Rayfield Gen2 (c) 2026 Corridon Capital, MPL-2.0
+-- k9x v1 - librería privada en español
+-- Basada en Rayfield Gen2 (c) 2026 Corridon Capital, MPL-2.0 (https://github.com/SiriusSoftwareLtd/rayfield-gen2)
+-- Base: k9x (c) 2026 Corridon Capital, MPL-2.0
 -- Cambios k9x: acento violeta, fondo mas frio, defaults propios.
 -- Licencia base se mantiene: https://mozilla.org/MPL/2.0/.
 

@@ -1,11 +1,11 @@
 <!--
 Use this template for a defect or regression. Target `dev`.
 
-Submit standalone documentation changes to https://github.com/SiriusSoftwareLtd/docs
+Submit standalone documentation changes to https://github.com/wNyxBaby/Fxr
 and link companion documentation work below when this fix affects public documentation.
 
 Do not include vulnerability details here; report them privately at
-https://github.com/SiriusSoftwareLtd/rayfield-gen2/security/advisories/new.
+https://github.com/wNyxBaby/Fxr/security/advisories/new.
 -->
 
 ## Summary
@@ -68,7 +68,7 @@ supported executors, regressions, and any migration requirements.
 ## Documentation coordination
 
 <!--
-Standalone public documentation changes belong in https://github.com/SiriusSoftwareLtd/docs.
+Standalone public documentation changes belong in https://github.com/wNyxBaby/Fxr.
 Link the companion docs issue or pull request when this fix affects public documentation.
 Note any code comments, examples, or type definitions updated here.
 -->
@@ -92,7 +92,7 @@ Note any code comments, examples, or type definitions updated here.
 - [ ] I reviewed my own changes.
 - [ ] The regression is covered by tests where practical.
 - [ ] Coverage did not drop below the enforced threshold.
-- [ ] Public documentation is unaffected, or I linked companion work in `SiriusSoftwareLtd/docs`.
+- [ ] Public documentation is unaffected, or I linked companion work in `wNyxBaby/Fxr`.
 - [ ] Required code comments, examples, and types match the corrected behavior.
 - [ ] I did not commit standalone documentation changes that belong in the docs repository.
 - [ ] I did not commit generated files such as `roblox.yml`, `sourcemap.json`, `globalTypes.d.luau`, or `build/`.

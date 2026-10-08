@@ -11,7 +11,7 @@ local locale = require(script.utility.locale)
 local constants = require(script.utility.constants)
 local types = require(script.types)
 
--- re-export public types so consumers can annotate against Rayfield.Window etc
+-- re-export public types so consumers can annotate against k9x.Window etc
 export type Theme = types.Theme
 export type Translator = types.Translator
 export type Translations = types.Translations
@@ -61,12 +61,12 @@ export type Text = types.Text
 export type Divider = types.Divider
 export type Tag = types.Tag
 export type Popup = types.Popup
-export type Rayfield = types.Rayfield
+export type k9x = types.k9x
 
 -- the components are untyped luau, so this is where the window module meets the public contract
 type WindowModule = { new: (types.WindowProps) -> types.Window }
 
-local rayfield = {} :: Rayfield
+local k9x = {} :: k9x
 
 local function createBanner()
     local ui = Instance.new("ScreenGui")
@@ -96,7 +96,7 @@ local function createBanner()
     return ui
 end
 
-function rayfield:CreateWindow(properties: types.WindowProps): types.Window
+function k9x:CreateWindow(properties: types.WindowProps): types.Window
     local banner = createBanner()
 
     local window: types.Window? -- forward declared so the settle callback below can reach it
@@ -183,4 +183,4 @@ function rayfield:CreateWindow(properties: types.WindowProps): types.Window
     return built
 end
 
-return rayfield
+return k9x

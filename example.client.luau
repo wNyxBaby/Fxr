@@ -1,5 +1,5 @@
 local ReplicatedStorage = game:GetService("ReplicatedStorage")
-local Rayfield = require(ReplicatedStorage.Rayfield)
+local k9x = require(ReplicatedStorage.k9x)
 
 -- Let the viewport settle before opening, so the window fits to the full screen size.
 task.wait(2)
@@ -25,9 +25,9 @@ local translations = {
     },
 }
 
-local window = Rayfield:CreateWindow({
+local window = k9x:CreateWindow({
     name = "Example",
-    subtitle = "Rayfield Gen2",
+    subtitle = "k9x",
     translations = translations,
     sidebarLayout = true, -- flip this for tabs across the top instead of down the left
     configuration = {

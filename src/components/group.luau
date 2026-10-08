@@ -95,7 +95,7 @@ end
 function Group:_add(componentName, properties)
     if self.compact and not compactCapable[componentName] then
         log.warn(
-            `Rayfield: a row only holds compact elements (button/toggle/stat/slider), ignoring '{componentName}'. Use a column for it.`
+            `k9x: a row only holds compact elements (button/toggle/stat/slider), ignoring '{componentName}'. Use a column for it.`
         )
         return nil
     end
