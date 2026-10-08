@@ -711,6 +711,17 @@ function Window.new(properties)
     end
     self._minimiseHidesUI = minimiseHidesUI
 
+    -- píldora colapsada solo en móvil (default true). En PC ocultar apaga la UI
+    -- y se vuelve con la tecla del menú.
+    local pillMobileOnly = properties.pillMobileOnly
+    if pillMobileOnly == nil then
+        pillMobileOnly = properties.PillMobileOnly
+    end
+    if pillMobileOnly == nil then
+        pillMobileOnly = true
+    end
+    self._pillMobileOnly = pillMobileOnly
+
     if showSettings then
         self.settingsAction = require(script.Parent.action).new(self, {
             name = "Settings",
@@ -1199,7 +1210,12 @@ function Window:Hide()
         -- the collapse is complete, so this cannot drift from the animation that creates it.
         self._collapsedShown = true
         setTopToastPosition(self, true)
-        self.collapsedInteract.Visible = true
+        if chrome.shouldShowPill(self) then
+            self.collapsedInteract.Visible = true
+        else
+            -- sin píldora (PC): apaga la UI del todo, se vuelve con la tecla del menú
+            self.screenGui.Enabled = false
+        end
         self.animating = false
         self._revealing = false
     end)
@@ -1215,7 +1231,9 @@ function Window:Hide()
         self.topbar.Visible = false
         self:_setContentVisible(false)
 
-        chrome.setCollapsedShown(self, true, faceInfo)
+        if chrome.shouldShowPill(self) then
+            chrome.setCollapsedShown(self, true, faceInfo)
+        end
     end)
 end
 
@@ -2088,6 +2106,9 @@ function Window:Show()
 
     self.hidden = false
     self.minimised = false
+
+    -- por si se apagó la UI (píldora solo-móvil o minimizar-oculta)
+    self.screenGui.Enabled = true
 
     -- a ChangeTheme landed while we were collapsed; apply it before anything fades back in
     if self._themeRefreshPending then

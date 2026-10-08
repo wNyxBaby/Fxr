@@ -196,6 +196,20 @@ function chrome.bindCollapsedDrag(window)
     end)
 end
 
+-- Móvil = táctil sin teclado. La píldora colapsada solo se muestra ahí;
+-- en PC ocultar es ocultar del todo y se vuelve con la tecla del menú.
+function chrome.isMobile()
+    local uis = variables.userInputService
+    return uis.TouchEnabled and not uis.KeyboardEnabled
+end
+
+function chrome.shouldShowPill(window)
+    if window._pillMobileOnly == false then
+        return true
+    end
+    return chrome.isMobile()
+end
+
 function chrome.isNewUser()
     local localPlayer = variables.localPlayer
     if not localPlayer then
