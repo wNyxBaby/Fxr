@@ -1328,8 +1328,12 @@ function Window:ToggleMinimise()
         end)
 
         self:_fadeSurfaces(false, fadeInfo)
+        -- modo k9x: la UI se contrae hacia dentro en vez de colapsar a la barra
+        local shrinkTo = if self._minimiseHidesUI
+            then UDim2.fromOffset(0, 0)
+            else UDim2.fromOffset(self.size.X.Offset, self.layout.topbarHeight)
         variables.tweenService
-            :Create(self.main, sizeInfo, { Size = UDim2.fromOffset(self.size.X.Offset, self.layout.topbarHeight) })
+            :Create(self.main, sizeInfo, { Size = shrinkTo })
             :Play()
 
         variables.tweenService
