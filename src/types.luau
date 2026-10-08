@@ -38,6 +38,8 @@ export type WindowProps = {
     showMinimise: boolean?, -- muestra el botón de minimizar (default true)
     minimiseHidesUI: boolean?, -- minimizar oculta toda la UI en vez de colapsar (default false)
     pillMobileOnly: boolean?, -- la píldora colapsada solo sale en móvil (default true)
+    showDragBar: boolean?, -- barra exterior de arrastre (default false en k9x)
+    allowResize: boolean?, -- agarre interior abajo-derecha para tamaño (default true)
     profile: string?, -- the line under the player's name in the sidebar; empty leaves the name alone
     configuration: WindowConfiguration?,
     fallbackFont: (Font | Enum.Font)?, -- built-in stand-in shown in secure mode while the brand font downloads

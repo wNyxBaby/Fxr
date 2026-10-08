@@ -333,6 +333,32 @@ function Window.new(properties)
 
     self.drag = require(script.Parent.drag).new(self)
 
+    -- k9x: la barra exterior de arrastre no se muestra (mover es por la
+    -- barra superior). En su lugar hay agarre interior para tamaño.
+    local showDragBar = properties.showDragBar
+    if showDragBar == nil then
+        showDragBar = properties.ShowDragBar
+    end
+    if showDragBar == nil then
+        showDragBar = false
+    end
+    self._showDragBar = showDragBar
+    if not showDragBar then
+        self.drag.drag.Visible = false
+    end
+
+    -- k9x: agarre curvo interior abajo-derecha para cambiar el tamaño
+    local allowResize = properties.allowResize
+    if allowResize == nil then
+        allowResize = properties.AllowResize
+    end
+    if allowResize == nil then
+        allowResize = true
+    end
+    if allowResize then
+        self.resize = require(script.Parent.resize).new(self)
+    end
+
     self.windowCorner = self:Create("UICorner", {
 
         Parent = self.main,
@@ -1148,6 +1174,13 @@ function Window:Hide()
 
     local home, size = self:_collapsedRect()
 
+    -- modo k9x sin píldora: misma animación que minimizar (contrae hacia
+    -- dentro en su sitio en vez de morph a la píldora)
+    if not chrome.shouldShowPill(self) then
+        home = self.main.Position
+        size = UDim2.fromOffset(0, 0)
+    end
+
     local fadeInfo = TweenInfo.new(0.18, Enum.EasingStyle.Quint, Enum.EasingDirection.Out)
     -- one continuous move for the whole collapse: size and position tween together on the
     -- same curve so they stay perfectly in sync, no seam between separate legs
@@ -1272,7 +1305,7 @@ function Window:ToggleMinimise()
         if self._minimiseHidesUI then
             self.screenGui.Enabled = true
             self.main.ClipsDescendants = false
-            if self.drag and self.drag.drag then
+            if self.drag and self.drag.drag and self._showDragBar then
                 self.drag.drag.Visible = true
             end
         end
@@ -2215,7 +2248,9 @@ function Window:_quickRestore()
             UDim2.new(target.X.Scale, target.X.Offset, target.Y.Scale, target.Y.Offset + self.size.Y.Offset / 2 + 15)
         self.drag.dragCosmetic.Size = UDim2.fromOffset(0, 4)
         self.drag.dragCosmetic.BackgroundTransparency = 1
-        self.drag.drag.Visible = true
+        if self._showDragBar then
+            self.drag.drag.Visible = true
+        end
         variables.tweenService
             :Create(self.drag.dragCosmetic, growInfo, { Size = UDim2.fromOffset(100, 4), BackgroundTransparency = 0.7 })
             :Play()
@@ -2324,7 +2359,9 @@ function Window:_firstShow()
     -- the fit can change between construction and now (a late camera banks a new size), so
     -- re-derive the bar's spot rather than trusting the construction-time position
     self:_syncDragBar()
-    self.drag.drag.Visible = true
+    if self._showDragBar then
+        self.drag.drag.Visible = true
+    end
     variables.tweenService
         :Create(
             self.drag.dragCosmetic,
