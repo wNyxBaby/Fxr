@@ -1793,10 +1793,10 @@ function Window:_buildSettingsUI()
         end,
     })
 
-    -- Configurations: save the current setup under a name and switch between saved ones.
-    -- Only shown once the developer opts into config saving.
+    -- Configuraciones: guarda el setup actual con un nombre y cambia entre guardadas.
+    -- Solo se muestra si el desarrollador activa el guardado de configuración.
     if next(self.configuration) ~= nil then
-        self.rfSettings:CreateSection({ name = "Configurations" })
+        self.rfSettings:CreateSection({ name = "Configuraciones" })
 
         local selected = self:ListConfigs()[1]
         local configDropdown, nameInput
@@ -1813,27 +1813,27 @@ function Window:_buildSettingsUI()
         end
 
         configDropdown = self.rfSettings:CreateDropdown({
-            name = "Saved Configurations",
+            name = "Configuraciones guardadas",
             icon = constants.icons.config,
             options = self:ListConfigs(),
             value = selected,
-            placeholder = "No saved configurations",
+            placeholder = "Sin configuraciones guardadas",
             callback = function(value)
                 selected = value
             end,
         })
 
         nameInput = self.rfSettings:CreateInput({
-            name = "Configuration Name",
-            description = "Name a new configuration, or leave blank to overwrite the selected one.",
-            placeholder = "e.g. PvP Loadout",
+            name = "Nombre de configuración",
+            description = "Nombra una configuración nueva, o deja vacío para sobrescribir la seleccionada.",
+            placeholder = "p. ej. PvP",
             clearOnFocus = false,
         })
 
         local actions = self.rfSettings:CreateGroup()
 
         actions:CreateButton({
-            name = "Save",
+            name = "Guardar",
             icon = constants.icons.config,
             callback = function()
                 local name = nameInput.value
@@ -1841,7 +1841,7 @@ function Window:_buildSettingsUI()
                     name = selected
                 end
                 if not name or name == "" then
-                    self:Toast({ title = locale.resolve("Name your configuration first") })
+                    self:Toast({ title = locale.resolve("Nombra tu configuración primero") })
                     return
                 end
                 if self:Save(name) then
@@ -1849,44 +1849,44 @@ function Window:_buildSettingsUI()
                     selected = name
                     refreshConfigs()
                     self:Toast({
-                        title = locale.resolve("Saved configuration"),
+                        title = locale.resolve("Configuración guardada"),
                         subtitle = name,
                         icon = constants.icons.config,
                     })
                 else
-                    self:Toast({ title = locale.resolve("Couldn't save configuration"), subtitle = name })
+                    self:Toast({ title = locale.resolve("No se pudo guardar la configuración"), subtitle = name })
                 end
             end,
         })
 
         actions:CreateButton({
-            name = "Load",
+            name = "Cargar",
             callback = function()
                 if not selected or selected == "" then
-                    self:Toast({ title = locale.resolve("Pick a configuration to load") })
+                    self:Toast({ title = locale.resolve("Elige una configuración para cargar") })
                     return
                 end
                 if self:_applyNamedConfig(selected) then
-                    self:Toast({ title = locale.resolve("Loaded configuration"), subtitle = selected })
+                    self:Toast({ title = locale.resolve("Configuración cargada"), subtitle = selected })
                 else
-                    self:Toast({ title = locale.resolve("Couldn't load configuration"), subtitle = selected })
+                    self:Toast({ title = locale.resolve("No se pudo cargar la configuración"), subtitle = selected })
                 end
             end,
         })
 
         actions:CreateButton({
-            name = "Delete",
+            name = "Eliminar",
             callback = function()
                 local deleting = selected
                 if not deleting or deleting == "" then
-                    self:Toast({ title = locale.resolve("Pick a configuration to delete") })
+                    self:Toast({ title = locale.resolve("Elige una configuración para eliminar") })
                     return
                 end
                 if self:DeleteConfig(deleting) then
                     refreshConfigs()
-                    self:Toast({ title = locale.resolve("Deleted configuration"), subtitle = deleting })
+                    self:Toast({ title = locale.resolve("Configuración eliminada"), subtitle = deleting })
                 else
-                    self:Toast({ title = locale.resolve("Couldn't delete configuration"), subtitle = deleting })
+                    self:Toast({ title = locale.resolve("No se pudo eliminar la configuración"), subtitle = deleting })
                 end
             end,
         })

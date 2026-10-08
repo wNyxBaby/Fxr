@@ -1939,48 +1939,50 @@ I.settings.keepOnScreen,callback=function(J)I.settings.keepOnScreen=J I:SaveSett
 ='Restablecer posici\u{f3}n',callback=function()f.tweenService:Create(I.main,TweenInfo.new(0.5,Enum.EasingStyle.
 Exponential,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,0,0.5,0)}):Play()f.tweenService:Create(I.drag.drag,
 TweenInfo.new(0.5,Enum.EasingStyle.Exponential,Enum.EasingDirection.Out),{Position=UDim2.new(0.5,0,0.5,I.size.Y.Offset/2
-+15)}):Play()end}if next(I.configuration)~=nil then I.rfSettings:CreateSection{name='Configurations'}local J,K,L=(I:
++15)}):Play()end}if next(I.configuration)~=nil then I.rfSettings:CreateSection{name='Configuraciones'}local J,K,L=(I:
 ListConfigs()[1])local function M()local N=I:ListConfigs()K:Refresh(N)if J and not table.find(N,J)then J=N[1]end if J
-then K:Set(J,true)end end K=I.rfSettings:CreateDropdown{name='Saved Configurations',icon=ai.icons.config,options=I:
-ListConfigs(),value=J,placeholder='No saved configurations',callback=function(N)J=N end}L=I.rfSettings:CreateInput{name=
-'Configuration Name',description=[[Name a new configuration, or leave blank to overwrite the selected one.]],placeholder
-='e.g. PvP Loadout',clearOnFocus=false}local N=I.rfSettings:CreateGroup()N:CreateButton{name='Save',icon=ai.icons.config
-,callback=function()local O=L.value if O==''then O=J end if not O or O==''then I:Toast{title=aj.resolve
-'Name your configuration first'}return end if I:Save(O)then L:Set''J=O M()I:Toast{title=aj.resolve'Saved configuration',
-subtitle=O,icon=ai.icons.config}else I:Toast{title=aj.resolve"Couldn't save configuration",subtitle=O}end end}N:
-CreateButton{name='Load',callback=function()if not J or J==''then I:Toast{title=aj.resolve'Pick a configuration to load'
-}return end if I:_applyNamedConfig(J)then I:Toast{title=aj.resolve'Loaded configuration',subtitle=J}else I:Toast{title=
-aj.resolve"Couldn't load configuration",subtitle=J}end end}N:CreateButton{name='Delete',callback=function()local O=J if
-not O or O==''then I:Toast{title=aj.resolve'Pick a configuration to delete'}return end if I:DeleteConfig(O)then M()I:
-Toast{title=aj.resolve'Deleted configuration',subtitle=O}else I:Toast{title=aj.resolve"Couldn't delete configuration",
-subtitle=O}end end}end end function h.SetProfile(I,J)I.profileText=J e.setSubtitle(I,J)end function h.SaveSettings(I)
-return ah.saveSettings(I)end function h.LoadSettings(I)return ah.loadSettings(I)end function h._roundCorners(I,J,K)if
-not K or not y then return I:Create('UICorner',{Parent=J},{CornerRadius='CornerRoundness'})end local L,M={Parent=J},{}
-for N,O in x do L[O]=UDim.new(0,0)end for N,O in K do L[O]=nil M[O]='CornerRoundness'end return I:Create('UICorner',L,M)
-end function h._setElementLocked(I,J,K,L)K=K==true local M=J.locked==true if M==K and not(K and L)then return end J.
-locked=K if not J.lockScrim then I:_buildLockScrim(J)end local N=TweenInfo.new(0.25,Enum.EasingStyle.Quint,Enum.
-EasingDirection.Out)if K then J.lockScrim.Visible=true end f.tweenService:Create(J.lockScrim,N,{BackgroundTransparency=
-if K then r else 1}):Play()if not K then task.delay(N.Time,function()if not J.locked and J.lockScrim then J.lockScrim.
-Visible=false end end)end local O=J.descriptor if not O then return end if K then J._descriptionBefore=J.
-_descriptionBefore or O.titleLabel.Text O.titleLabel.Text=aj.resolve(L or'This element is locked.')elseif J.
-_descriptionBefore then O.titleLabel.Text=J._descriptionBefore J._descriptionBefore=nil end f.tweenService:Create(O.
-titleLabel,N,{TextTransparency=if K then s else 0.7}):Play()end function h._buildLockScrim(I,J)J.lockScrim=I:Create(
-'TextButton',{Name='ElementLock',Active=true,AutoButtonColor=false,Size=UDim2.fromScale(1,1),BorderSizePixel=0,Text='',
-TextTransparency=1,ZIndex=ai.zIndex.elementLock,Visible=false,BackgroundTransparency=1,Parent=J.main},{BackgroundColor3=
-{'WindowColor',C}})I:Create('UICorner',{Parent=J.lockScrim},{CornerRadius='ElementCornerRadius'})end function h.
-_setContentVisible(I,J)I.elements.Visible=J I.tabList.Visible=J if I.sidebar then I.sidebar.Visible=J end end function h
-._fadeSurfaces(I,J,K)local L={[I.windowShadow]={Transparency=if J then 0.6 else 1},[I.windowStroke]={Transparency=if J
-then 0.95 else 1},[I.bottomFade]={BackgroundTransparency=if J then 0 else 1}}if I.elementsStroke then L[I.elements]={
-BackgroundTransparency=if J then I.layout.cardTransparency else 1}L[I.elementsStroke]={Transparency=if J then 0 else 1}
-end for M,N in L do if K then f.tweenService:Create(M,K,N):Play()else for O,P in N do M[O]=P end end end e.
-setProfileShown(I,J,K)end function h._fadeSelectedElementsOut(I)if I.selectedTab then for J,K in ipairs(I.selectedTab.
-elements)do K:_setShown(false,true)end end end function h._revealElements(I,J,K)for L,M in pairs(I.tabs)do if M~=I.
-selectedTab then for N,O in ipairs(M.elements)do O:_setShown(true,false)end end end local L=I.selectedTab if not L then
-return end local M=L.tabPage local N=M.AbsolutePosition.Y local O,P,Q=N+M.AbsoluteWindowSize.Y,math.floor(K/J),0 for R,S
-in ipairs(L.elements)do local T=S.main.AbsolutePosition.Y local U=(T+S.main.AbsoluteSize.Y)>N and T<O if U then S:
-_setShown(true,true)Q+=1 if Q<=P then task.wait(J)end else S:_setShown(true,false)end end end function h.Show(I)if I.
-animating or not I.hidden then return end I.animating=true I._revealing=true if I.configuration.autoLoad and not I.
-_autoLoaded then I._autoLoaded=true local J,K=pcall(I.Load,I)if not J then ak.warn(
+then K:Set(J,true)end end K=I.rfSettings:CreateDropdown{name='Configuraciones guardadas',icon=ai.icons.config,options=I:
+ListConfigs(),value=J,placeholder='Sin configuraciones guardadas',callback=function(N)J=N end}L=I.rfSettings:CreateInput
+{name='Nombre de configuraci\u{f3}n',description=
+'Nombra una configuraci\u{f3}n nueva, o deja vac\u{ed}o para sobrescribir la seleccionada.',placeholder='p. ej. PvP',
+clearOnFocus=false}local N=I.rfSettings:CreateGroup()N:CreateButton{name='Guardar',icon=ai.icons.config,callback=
+function()local O=L.value if O==''then O=J end if not O or O==''then I:Toast{title=aj.resolve
+'Nombra tu configuraci\u{f3}n primero'}return end if I:Save(O)then L:Set''J=O M()I:Toast{title=aj.resolve
+'Configuraci\u{f3}n guardada',subtitle=O,icon=ai.icons.config}else I:Toast{title=aj.resolve
+'No se pudo guardar la configuraci\u{f3}n',subtitle=O}end end}N:CreateButton{name='Cargar',callback=function()if not J
+or J==''then I:Toast{title=aj.resolve'Elige una configuraci\u{f3}n para cargar'}return end if I:_applyNamedConfig(J)then
+I:Toast{title=aj.resolve'Configuraci\u{f3}n cargada',subtitle=J}else I:Toast{title=aj.resolve
+'No se pudo cargar la configuraci\u{f3}n',subtitle=J}end end}N:CreateButton{name='Eliminar',callback=function()local O=J
+if not O or O==''then I:Toast{title=aj.resolve'Elige una configuraci\u{f3}n para eliminar'}return end if I:DeleteConfig(
+O)then M()I:Toast{title=aj.resolve'Configuraci\u{f3}n eliminada',subtitle=O}else I:Toast{title=aj.resolve
+'No se pudo eliminar la configuraci\u{f3}n',subtitle=O}end end}end end function h.SetProfile(I,J)I.profileText=J e.
+setSubtitle(I,J)end function h.SaveSettings(I)return ah.saveSettings(I)end function h.LoadSettings(I)return ah.
+loadSettings(I)end function h._roundCorners(I,J,K)if not K or not y then return I:Create('UICorner',{Parent=J},{
+CornerRadius='CornerRoundness'})end local L,M={Parent=J},{}for N,O in x do L[O]=UDim.new(0,0)end for N,O in K do L[O]=
+nil M[O]='CornerRoundness'end return I:Create('UICorner',L,M)end function h._setElementLocked(I,J,K,L)K=K==true local M=
+J.locked==true if M==K and not(K and L)then return end J.locked=K if not J.lockScrim then I:_buildLockScrim(J)end local
+N=TweenInfo.new(0.25,Enum.EasingStyle.Quint,Enum.EasingDirection.Out)if K then J.lockScrim.Visible=true end f.
+tweenService:Create(J.lockScrim,N,{BackgroundTransparency=if K then r else 1}):Play()if not K then task.delay(N.Time,
+function()if not J.locked and J.lockScrim then J.lockScrim.Visible=false end end)end local O=J.descriptor if not O then
+return end if K then J._descriptionBefore=J._descriptionBefore or O.titleLabel.Text O.titleLabel.Text=aj.resolve(L or
+'This element is locked.')elseif J._descriptionBefore then O.titleLabel.Text=J._descriptionBefore J._descriptionBefore=
+nil end f.tweenService:Create(O.titleLabel,N,{TextTransparency=if K then s else 0.7}):Play()end function h.
+_buildLockScrim(I,J)J.lockScrim=I:Create('TextButton',{Name='ElementLock',Active=true,AutoButtonColor=false,Size=UDim2.
+fromScale(1,1),BorderSizePixel=0,Text='',TextTransparency=1,ZIndex=ai.zIndex.elementLock,Visible=false,
+BackgroundTransparency=1,Parent=J.main},{BackgroundColor3={'WindowColor',C}})I:Create('UICorner',{Parent=J.lockScrim},{
+CornerRadius='ElementCornerRadius'})end function h._setContentVisible(I,J)I.elements.Visible=J I.tabList.Visible=J if I.
+sidebar then I.sidebar.Visible=J end end function h._fadeSurfaces(I,J,K)local L={[I.windowShadow]={Transparency=if J
+then 0.6 else 1},[I.windowStroke]={Transparency=if J then 0.95 else 1},[I.bottomFade]={BackgroundTransparency=if J then
+0 else 1}}if I.elementsStroke then L[I.elements]={BackgroundTransparency=if J then I.layout.cardTransparency else 1}L[I.
+elementsStroke]={Transparency=if J then 0 else 1}end for M,N in L do if K then f.tweenService:Create(M,K,N):Play()else
+for O,P in N do M[O]=P end end end e.setProfileShown(I,J,K)end function h._fadeSelectedElementsOut(I)if I.selectedTab
+then for J,K in ipairs(I.selectedTab.elements)do K:_setShown(false,true)end end end function h._revealElements(I,J,K)for
+L,M in pairs(I.tabs)do if M~=I.selectedTab then for N,O in ipairs(M.elements)do O:_setShown(true,false)end end end local
+L=I.selectedTab if not L then return end local M=L.tabPage local N=M.AbsolutePosition.Y local O,P,Q=N+M.
+AbsoluteWindowSize.Y,math.floor(K/J),0 for R,S in ipairs(L.elements)do local T=S.main.AbsolutePosition.Y local U=(T+S.
+main.AbsoluteSize.Y)>N and T<O if U then S:_setShown(true,true)Q+=1 if Q<=P then task.wait(J)end else S:_setShown(true,
+false)end end end function h.Show(I)if I.animating or not I.hidden then return end I.animating=true I._revealing=true if
+I.configuration.autoLoad and not I._autoLoaded then I._autoLoaded=true local J,K=pcall(I.Load,I)if not J then ak.warn(
 'k9x: Failed to load configuration - '..tostring(K))end end I.hidden=false I.minimised=false I.screenGui.Enabled=true if
 I._themeRefreshPending then I._themeRefreshPending=false I:_refreshElementThemes()end I.collapsedInteract.Visible=false
 if I._freeMouse then I._freeMouse()end if I.hasShownOnce then I:_quickRestore()else I.hasShownOnce=true I:_firstShow()
@@ -2741,35 +2743,35 @@ math.min(math.clamp(c,am.minSize.Y,am.defaultSize.Y),c)e=math.floor(math.min(e,d
 floor(math.min(d,e*am.maxAspectRatio))return UDim2.fromOffset(d,e)end function af.fit(am:Vector2?,b:ae.Mode?):UDim2
 local c=af.profile(b)if not am or am.X<ag or am.Y<ag then return UDim2.fromOffset(c.defaultSize.X,c.defaultSize.Y)end
 local d,e=math.min(am.X*c.maxOccupancyX,am.X-c.marginFloorX),ai(c,am.Y)if c.minAspectRatio then return al(c,d,e)end
-return ak(c,d,e)end return af end)()end},{{1,2,{'k9x'},{{39,2,{'types'}},{40,1,{'utility'},{{71,2,{'windowSizing'}},{70,
-2,{'variables'}},{64,2,{'persistencePaths'}},{57,2,{'moveable'}},{48,2,{'flagNames'}},{49,2,{'fontManager'}},{65,2,{
-'persistenceSettings'}},{62,2,{'persistence'}},{68,2,{'services'}},{46,2,{'filesystem'}},{43,2,{'colors'}},{66,2,{
-'persistenceWrite'}},{41,2,{'HapticEngine'}},{45,2,{'enums'}},{63,2,{'persistenceConfig'}},{67,2,{'runtime'}},{54,2,{
-'locale'}},{61,2,{'path'}},{59,2,{'odometer'}},{60,2,{'ordering'}},{58,2,{'network'}},{69,2,{'textMetrics'}},{55,2,{
-'lockable'}},{56,2,{'log'}},{51,2,{'image'}},{53,2,{'layouts'}},{44,2,{'constants'}},{47,2,{'filesystemManager'}},{52,2,
-{'imageCache'}},{42,2,{'assetResolver'}},{50,2,{'functions'}}}},{31,1,{'themes'},{{32,2,{'amethyst'}},{33,2,{'cobalt'}},
-{38,2,{'rose'}},{36,2,{'frost'}},{37,2,{'k9x'}},{35,2,{'ember'}},{34,2,{'default'}}}},{2,1,{'components'},{{9,2,{
-'divider'}},{25,2,{'tabSelector'}},{17,2,{'progress'}},{16,2,{'popup'}},{18,2,{'search'}},{3,2,{'action'}},{7,2,{
-'console'}},{5,2,{'chrome'}},{27,2,{'text'}},{6,2,{'colorpicker'}},{11,2,{'dropdown'}},{28,2,{'toast'}},{30,2,{'window'}
-},{29,2,{'toggle'}},{26,2,{'tag'}},{4,2,{'button'}},{14,2,{'keybind'}},{10,2,{'drag'}},{19,2,{'section'}},{8,2,{
-'descriptor'}},{22,2,{'stat'}},{12,2,{'group'}},{23,2,{'tab'}},{21,2,{'slider'}},{13,2,{'input'}},{20,2,{'sidebar'}},{24
-,2,{'tabSection'}},{15,2,{'notification'}}}}}}},'0.4.1','k9x',string,task,setmetatable,error,next,table,unpack,coroutine
-,script,type,require,pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or
-function(j)return j end,al.wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q
-and r then af=r end end local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[
-2]='ModuleScript',[3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},
-function(A)local B,C=A.Name,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A
-)local B={}for C in ai,z[A]do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)
-for D,E in ai,C:GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)
-local D=z[A]for E in ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,
-true)end end end},FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end
-C=C.Parent end end},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do
-local E,F,G=D[1],D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]
-then ah("Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O
-=b(L),K[1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'
-and O)then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C
-(D,E,F)local G,H=(ag({},{__mode='k'}))local function I(J)ah(J..' is not a valid (virtual) member of '..D..' "'..E..'"',3
-)end local function J(K)ah('Unable to assign (virtual) property '..K..'. Property is read only',3)end local K,L={},{}L.
+return ak(c,d,e)end return af end)()end},{{1,2,{'k9x'},{{40,1,{'utility'},{{58,2,{'network'}},{70,2,{'variables'}},{69,2
+,{'textMetrics'}},{59,2,{'odometer'}},{60,2,{'ordering'}},{44,2,{'constants'}},{53,2,{'layouts'}},{64,2,{
+'persistencePaths'}},{63,2,{'persistenceConfig'}},{56,2,{'log'}},{52,2,{'imageCache'}},{68,2,{'services'}},{47,2,{
+'filesystemManager'}},{67,2,{'runtime'}},{66,2,{'persistenceWrite'}},{65,2,{'persistenceSettings'}},{54,2,{'locale'}},{
+71,2,{'windowSizing'}},{51,2,{'image'}},{42,2,{'assetResolver'}},{46,2,{'filesystem'}},{61,2,{'path'}},{49,2,{
+'fontManager'}},{62,2,{'persistence'}},{57,2,{'moveable'}},{45,2,{'enums'}},{55,2,{'lockable'}},{50,2,{'functions'}},{43
+,2,{'colors'}},{48,2,{'flagNames'}},{41,2,{'HapticEngine'}}}},{31,1,{'themes'},{{38,2,{'rose'}},{34,2,{'default'}},{36,2
+,{'frost'}},{35,2,{'ember'}},{32,2,{'amethyst'}},{37,2,{'k9x'}},{33,2,{'cobalt'}}}},{39,2,{'types'}},{2,1,{'components'}
+,{{17,2,{'progress'}},{19,2,{'section'}},{15,2,{'notification'}},{14,2,{'keybind'}},{29,2,{'toggle'}},{12,2,{'group'}},{
+7,2,{'console'}},{22,2,{'stat'}},{23,2,{'tab'}},{21,2,{'slider'}},{4,2,{'button'}},{16,2,{'popup'}},{6,2,{'colorpicker'}
+},{5,2,{'chrome'}},{8,2,{'descriptor'}},{20,2,{'sidebar'}},{3,2,{'action'}},{11,2,{'dropdown'}},{28,2,{'toast'}},{27,2,{
+'text'}},{10,2,{'drag'}},{25,2,{'tabSelector'}},{18,2,{'search'}},{24,2,{'tabSection'}},{9,2,{'divider'}},{26,2,{'tag'}}
+,{13,2,{'input'}},{30,2,{'window'}}}}}}},'0.4.1','k9x',string,task,setmetatable,error,next,table,unpack,coroutine,script
+,type,require,pcall,xpcall,tostring,tonumber,_VERSION local j,k,l,m,n,o,p=aj.insert,aj.remove,aj.freeze or function(j)
+return j end,al.wrap,ae.sub,ae.match,ae.gmatch if h and n(h,1,4)=='Lune'then local q,r=d(c,'@lune/task')if q and r then
+af=r end end local q=af and af.defer local r,s,t,u,v,w,x,y,z=q or function(r,...)m(r)(...)end,{[1]='Folder',[2]=
+'ModuleScript',[3]='Script',[4]='LocalScript',[5]='StringValue'},{},{},{},{},{},{},{}local A,B={GetFullName={{},function
+(A)local B,C=A.Name,A.Parent while C do B=C.Name..'.'..B C=C.Parent end return B end},GetChildren={{},function(A)local B
+={}for C in ai,z[A]do j(B,C)end return B end},GetDescendants={{},function(A)local B={}for C in ai,z[A]do j(B,C)for D,E
+in ai,C:GetDescendants()do j(B,E)end end return B end},FindFirstChild={{'string','boolean?'},function(A,B,C)local D=z[A]
+for E in ai,D do if E.Name==B then return E end end if C then for E in ai,D do return E:FindFirstChild(B,true)end end
+end},FindFirstAncestor={{'string'},function(A,B)local C=A.Parent while C do if C.Name==B then return C end C=C.Parent
+end end},WaitForChild={{'string','number?'},function(A,B)return A:FindFirstChild(B)end}},{}for C,D in ai,A do local E,F,
+G=D[1],D[2],{}for H,I in ai,E do local J,K=o(I,'^([^%?]+)(%??)')G[H]={J,K}end B[C]=function(H,...)if not z[H]then ah(
+"Expected ':' not '.' calling member function "..C,2)end local I={...}for J,K in ai,G do local L=I[J]local M,N,O=b(L),K[
+1],K[2]if L==nil and not O then ah('Argument '..L..' missing or nil',3)end if N~='any'and M~=N and not(M=='nil'and O)
+then ah('Argument '..J..' expects type "'..N..'", got "'..M..'"',2)end end return F(H,...)end end local function C(D,E,F
+)local G,H=(ag({},{__mode='k'}))local function I(J)ah(J..' is not a valid (virtual) member of '..D..' "'..E..'"',3)end
+local function J(K)ah('Unable to assign (virtual) property '..K..'. Property is read only',3)end local K,L={},{}L.
 __metatable=false L.__index=function(M,N)if N=='ClassName'then return D elseif N=='Name'then return E elseif N=='Parent'
 then return F elseif D=='StringValue'and N=='Value'then return H else local O=B[N]if O then return O end end for O in ai
 ,G do if O.Name==N then return O end end I(N)end L.__newindex=function(M,N,O)if N=='ClassName'then J(N)elseif N=='Name'
