@@ -33,6 +33,9 @@ export type WindowProps = {
     showIcon: (string | number)?,
     showIconOnly: boolean?, -- collapse to a round icon badge instead of an icon-and-label pill
     sidebarLayout: boolean?, -- tabs down the left instead of across the top
+    showSearch: boolean?, -- muestra el botón de búsqueda (default true)
+    showSettings: boolean?, -- muestra el botón de ajustes y su página (default true)
+    showMinimise: boolean?, -- muestra el botón de minimizar (default true)
     profile: string?, -- the line under the player's name in the sidebar; empty leaves the name alone
     configuration: WindowConfiguration?,
     fallbackFont: (Font | Enum.Font)?, -- built-in stand-in shown in secure mode while the brand font downloads

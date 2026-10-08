@@ -639,15 +639,33 @@ function Window.new(properties)
         Parent = self.actionContainer,
     })
 
-    self.rfSettings = self:CreateTab({
-        name = "Ajustes k9x",
-        customOrder = 1000,
+    -- botones superiores: buscar y ajustes se pueden ocultar por props (default visibles)
+    local showSettings = properties.showSettings
+    if showSettings == nil then
+        showSettings = properties.ShowSettings
+    end
+    if showSettings == nil then
+        showSettings = true
+    end
+    local showSearch = properties.showSearch
+    if showSearch == nil then
+        showSearch = properties.ShowSearch
+    end
+    if showSearch == nil then
+        showSearch = true
+    end
 
-        neglectSelector = true,
-        -- everything here is ephemeral: these controls persist to k9x.k9x via SaveSettings,
-        -- never the user's config. children inherit this, so none of them opt out individually.
-        forgetState = true,
-    })
+    if showSettings then
+        self.rfSettings = self:CreateTab({
+            name = "Ajustes k9x",
+            customOrder = 1000,
+
+            neglectSelector = true,
+            -- everything here is ephemeral: these controls persist to k9x.k9x via SaveSettings,
+            -- never the user's config. children inherit this, so none of them opt out individually.
+            forgetState = true,
+        })
+    end
 
     require(script.Parent.action).new(self, {
         name = "Close",
@@ -669,18 +687,35 @@ function Window.new(properties)
         end,
     })
 
-    self.settingsAction = require(script.Parent.action).new(self, {
-        name = "Settings",
-        icon = constants.icons.settings,
-        order = 3,
-        linkedTab = self.rfSettings,
+    -- quitar el modo minimizado: oculta el botón (default visible). Sin botón no hay
+    -- forma de entrar al estado colapsado desde la UI; todo lo interno sigue intacto.
+    local showMinimise = properties.showMinimise
+    if showMinimise == nil then
+        showMinimise = properties.ShowMinimise
+    end
+    if showMinimise == nil then
+        showMinimise = true
+    end
+    if not showMinimise then
+        self.minimiseAction.action.Visible = false
+    end
 
-        callback = function()
-            self.rfSettings:Select()
-        end,
-    })
+    if showSettings then
+        self.settingsAction = require(script.Parent.action).new(self, {
+            name = "Settings",
+            icon = constants.icons.settings,
+            order = 3,
+            linkedTab = self.rfSettings,
 
-    search.build(self)
+            callback = function()
+                self.rfSettings:Select()
+            end,
+        })
+    end
+
+    if showSearch then
+        search.build(self)
+    end
     -- the field is built after the rail, so hand it the width the rail actually settled on
     self:_applyRailWidth()
 
@@ -705,7 +740,9 @@ function Window.new(properties)
     self:_bindMouseOverride()
     self:_bindTopbarDrag()
     self:_watchViewport()
-    self:_buildSettingsUI()
+    if showSettings then
+        self:_buildSettingsUI()
+    end
 
     self:_syncLiveAnimation()
 
