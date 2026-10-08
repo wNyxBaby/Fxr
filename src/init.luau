@@ -81,16 +81,17 @@ local function createBanner()
     ui.ZIndexBehavior = Enum.ZIndexBehavior.Sibling
     ui.Parent = variables.guiContainer
 
-    local banner = Instance.new("ImageLabel")
+    -- rework k9x: logo en texto, sin imagen de Rayfield (funciona hasta sin red)
+    local banner = Instance.new("TextLabel")
     banner.Name = "Banner"
     banner.AnchorPoint = Vector2.new(0.5, 0.5)
-    banner.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
     banner.BackgroundTransparency = 1
-    banner.BorderColor3 = Color3.fromRGB(0, 0, 0)
-    banner.BorderSizePixel = 0
-    banner.Image = image.resolve(constants.icons.banner)
+    banner.FontFace = variables.brandFont(Enum.FontWeight.SemiBold)
+    banner.Text = "k9x"
+    banner.TextSize = 64
+    banner.TextColor3 = Color3.fromRGB(255, 255, 255)
     banner.Position = UDim2.fromScale(0.5, 0.5)
-    banner.Size = UDim2.fromOffset(262, 60)
+    banner.Size = UDim2.fromOffset(262, 80)
     banner.Parent = ui
 
     return ui
