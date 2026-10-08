@@ -36,6 +36,7 @@ export type WindowProps = {
     showSearch: boolean?, -- muestra el botón de búsqueda (default true)
     showSettings: boolean?, -- muestra el botón de ajustes y su página (default true)
     showMinimise: boolean?, -- muestra el botón de minimizar (default true)
+    minimiseHidesUI: boolean?, -- minimizar oculta toda la UI en vez de colapsar (default false)
     profile: string?, -- the line under the player's name in the sidebar; empty leaves the name alone
     configuration: WindowConfiguration?,
     fallbackFont: (Font | Enum.Font)?, -- built-in stand-in shown in secure mode while the brand font downloads

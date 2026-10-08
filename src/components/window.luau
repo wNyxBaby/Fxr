@@ -700,6 +700,17 @@ function Window.new(properties)
         self.minimiseAction.action.Visible = false
     end
 
+    -- minimizar = ocultar toda la UI (sin píldora colapsada). Se restaura con el
+    -- botón o con la tecla del menú. Default false (colapsa a la barra como stock).
+    local minimiseHidesUI = properties.minimiseHidesUI
+    if minimiseHidesUI == nil then
+        minimiseHidesUI = properties.MinimiseHidesUI
+    end
+    if minimiseHidesUI == nil then
+        minimiseHidesUI = false
+    end
+    self._minimiseHidesUI = minimiseHidesUI
+
     if showSettings then
         self.settingsAction = require(script.Parent.action).new(self, {
             name = "Settings",
@@ -1235,6 +1246,13 @@ function Window:ToggleMinimise()
     local fadeInfo = TweenInfo.new(0.4, Enum.EasingStyle.Exponential, Enum.EasingDirection.Out)
 
     if self.minimised then
+        if self._minimiseHidesUI then
+            self.minimised = false
+            image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
+            self.screenGui.Enabled = true
+            self.animating = false
+            return
+        end
         self.minimised = false
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
 
@@ -1278,6 +1296,13 @@ function Window:ToggleMinimise()
     else
         self.minimised = true
         image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.maximise) -- maximise icon while minimised
+
+        -- modo k9x: ocultar todo en vez de colapsar a la barra (se restaura con K)
+        if self._minimiseHidesUI then
+            self.screenGui.Enabled = false
+            self.animating = false
+            return
+        end
 
         -- fade the content + tab pills out instead of cutting them, then hide them once faded
         -- so they don't sit clipped under the collapsed bar
@@ -1461,7 +1486,11 @@ function Window:_bindKeybind()
             return -- a keybind element is mid-rebind, dont eat its capture
         end
         if input.KeyCode == self.settings.toggleKeybind or input.UserInputType == self.settings.toggleKeybind then
-            self:ToggleHide()
+            if self._minimiseHidesUI and self.minimised and not self.hidden then
+                self:ToggleMinimise() -- restaura el ocultar-total
+            else
+                self:ToggleHide()
+            end
         end
     end)
 end
