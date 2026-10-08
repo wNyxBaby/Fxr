@@ -1126,23 +1126,9 @@ function Window:Hide()
         self._recordingKeybind:_stopRecording()
     end
 
-    -- modo k9x sin píldora (PC): fuera al instante, sin morph ni cara colapsada.
-    -- Show lo trae de vuelta (_quickRestore reenciende arrastre y contenido).
-    if not chrome.shouldShowPill(self) then
-        if self.minimised then
-            self.minimised = false
-            image.assign(self.minimiseAction.iconLabel, "Image", constants.icons.minimise) -- back to the minimise icon
-        end
-        self.hidden = true
-        self._restorePosition = self.main.Position
-        self.topbar.Visible = false
-        self:_setContentVisible(false)
-        if self.drag and self.drag.drag then
-            self.drag.drag.Visible = false
-        end
-        self.screenGui.Enabled = false
-        return
-    end
+    -- NOTA k9x: sin camino instantáneo. El morph original corre (con la cara
+    -- colapsada suprimida por shouldShowPill) y al completarse se apaga la UI.
+    -- Atajarlo dejaba el contenido a medias (cuadro vacío) en doble-pulsación.
 
     self.animating = true
     self._revealing = true
