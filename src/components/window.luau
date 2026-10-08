@@ -2378,6 +2378,7 @@ function Window:_firstShow()
             subtitleAbove = true, -- lee "Sesión iniciada como" / nombre, etiqueta sobre valor
             avatar = localPlayer.UserId,
             minWidth = 220, -- match the old license card's width for that roomy right-hand space
+            duration = 5, -- rework k9x: se queda un poco más para leer el nombre
         })
     end
 end

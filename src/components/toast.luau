@@ -197,6 +197,16 @@ function Toast.new(window, properties, container)
 
             Parent = self.iconLabel,
         })
+
+        -- rework k9x: aro de acento en el avatar (chip de perfil), apagado hasta la entrada
+        if hasAvatar then
+            self.avatarRing = self.window:Create("UIStroke", {
+                Thickness = 2,
+                Transparency = 1, -- In = 0.35
+
+                Parent = self.iconLabel,
+            }, { Color = "AccentColor" })
+        end
     end
 
     -- text column hugs its content; the body's AutomaticSize is off (we tween its width) so
@@ -366,6 +376,9 @@ function Toast:_show()
         variables.tweenService:Create(self.iconLabel, fadeShort, { BackgroundTransparency = 0.95 }):Play()
         variables.tweenService:Create(self.iconLabel, fadeShort, { ImageTransparency = 0 }):Play()
     end
+    if self.avatarRing then
+        variables.tweenService:Create(self.avatarRing, fadeShort, { Transparency = 0.35 }):Play()
+    end
 
     task.wait(0.05)
     if self._dismissed or not self.main.Parent then
@@ -415,6 +428,9 @@ function Toast:_dismiss()
         variables.tweenService
             :Create(self.iconLabel, fadeShort, { ImageTransparency = 1, BackgroundTransparency = 1 })
             :Play()
+    end
+    if self.avatarRing then
+        variables.tweenService:Create(self.avatarRing, fadeShort, { Transparency = 1 }):Play()
     end
 
     variables.tweenService:Create(self.body, shrinkInfo, { Size = UDim2.new(1, -60, 1, 0) }):Play()
